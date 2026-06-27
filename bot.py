@@ -1,3 +1,15 @@
+# 這段程式碼必須存在於您的 bot.py 最上方
+from http.server import BaseHTTPRequestHandler, HTTPServer
+class SimpleKeepAliveHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200); self.end_headers(); self.wfile.write(b"Bot is Active")
+
+def run_web_server():
+    server = HTTPServer(('0.0.0.0', int(os.environ.get("PORT", 8080))), SimpleKeepAliveHandler)
+    server.serve_forever()
+
+import threading
+threading.Thread(target=run_web_server, daemon=True).start()
 import os
 import discord
 import threading
